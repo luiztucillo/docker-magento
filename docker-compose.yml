@@ -62,14 +62,14 @@ services:
         - node.name=es1
         - cluster.name=elasticsearch
         - bootstrap.memory_lock=true
-        - ES_JAVA_OPTS=-Xms256m -Xmx256m
+        - ES_JAVA_OPTS=-Xms512m -Xmx512m
         - discovery.type=single-node
       ulimits:
         memlock:
           soft: -1
           hard: -1
       volumes:
-        - ./data/elasticsearch:/usr/share/elasticsearch/data
+        - magento_elasticsearch_volume:/usr/share/elasticsearch/data
       ports:
         - 9200:9200
       networks:
@@ -87,3 +87,6 @@ services:
 networks:
     magento-network:
         driver: bridge
+
+volumes:
+    magento_elasticsearch_volume:
