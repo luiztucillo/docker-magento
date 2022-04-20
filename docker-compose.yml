@@ -39,8 +39,9 @@ services:
             # - mysql
             - es1
         volumes:
-          - ./src:/var/www/html
-          - ./data/composer:/root/.config/composer/
+            - ./src:/var/www/html
+            - php_composer_root:/root/.config/composer/
+            - php_sessions:/var/lib/php/sessions
         networks:
             - magento-network
 
@@ -94,3 +95,6 @@ networks:
 
 volumes:
     magento_elasticsearch_volume:
+    php_sessions:
+    php_composer_root:
+    php_composer_home:
