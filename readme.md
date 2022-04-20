@@ -50,23 +50,3 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 
 # RUN Mysql docker to connect client
 `docker run --interactive --tty --rm mysql bash`
-
-
-
-
-docker exec -it magento_php php ./bin/magento setup:install \
-    --base-url=certificacion.ppolimpo.io \
-    --db-host=ppolimpo-hml.cvtuyt7i6jwd.us-east-1.rds.amazonaws.com \
-    --db-name=certificacion_magento \
-    --db-user=admin \
-    --db-password=A5FzAz99haZPzw6RATud \
-    --admin-firstname=Luiz \
-    --admin-lastname=Tucillo \
-    --admin-email=luiz.tucillo@mercadolivre.com \
-    --admin-user=admin \
-    --admin-password=Lfrt@2196# \
-    --elasticsearch-host=es1 \
-    --language=pt_BR \
-    --currency=BRL \
-    --timezone=America/Sao_Paulo \
-    --use-rewrites=1
