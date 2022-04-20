@@ -95,6 +95,7 @@ networks:
 
 volumes:
     magento_elasticsearch_volume:
+    magento_var:
     php_sessions:
     php_composer_root:
     php_composer_home:
