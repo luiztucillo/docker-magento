@@ -1,0 +1,89 @@
+version: '3.8'
+services:
+    nginx:
+        build:
+            context: images/nginx
+            args:
+                username: ${USERNAME}
+                domain: ${DOMAIN}
+                cert_path: ${CERT_PATH}
+                cert_key_path: ${CERT_KEY_PATH}
+        container_name: magento_nginx
+        ports:
+            - 80:80
+            - 443:443
+        links:
+            - php
+        volumes:
+            - ./src:/var/www/html
+            - ./images/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
+            - ./images/nginx/conf/application.conf:/etc/nginx/application.conf
+            - ${CERT_PATH}:${CERT_PATH}
+            - ${CERT_KEY_PATH}:${CERT_KEY_PATH}
+        networks:
+            magento-network:
+                aliases:
+                    - ${DOMAIN}
+
+    php:
+        build:
+            context: images/php
+            args:
+                username: ${USERNAME}
+                host_os: ${HOST_OS}
+                domain: ${DOMAIN}
+        container_name: magento_php
+        links:
+            # - mysql
+            - es1
+        volumes:
+          - ./src:/var/www/html
+          - ./data/composer:/root/.config/composer/
+        networks:
+            - magento-network
+
+    # db:
+    #   image: mariadb:10.4
+    #   container_name: magento_db
+    #   environment:
+    #     - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    #     - MYSQL_DATABASE=magento2
+    #   ports:
+    #     - 3306:3306
+    #   volumes:
+    #     - ./data/db/var/lib/mysql:/var/lib/mysql
+    #   networks:
+    #     - magento-network
+
+    es1:
+      image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
+      container_name: magento_elasticsearch
+      environment:
+        - node.name=es1
+        - cluster.name=elasticsearch
+        - bootstrap.memory_lock=true
+        - ES_JAVA_OPTS=-Xms256m -Xmx256m
+        - discovery.type=single-node
+      ulimits:
+        memlock:
+          soft: -1
+          hard: -1
+      volumes:
+        - ./data/elasticsearch:/usr/share/elasticsearch/data
+      ports:
+        - 9200:9200
+      networks:
+        - magento-network
+
+    mailhog:
+        image: mailhog/mailhog
+        container_name: magento_mailhog
+        ports:
+            - 1025:1025
+            - 8025:8025
+        networks:
+            - magento-network
+
+networks:
+    magento-network:
+        driver: bridge
