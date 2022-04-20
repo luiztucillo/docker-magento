@@ -1,6 +1,7 @@
 version: '3.8'
 services:
     nginx:
+        restart: always
         build:
             context: images/nginx
             args:
@@ -26,6 +27,7 @@ services:
                     - ${DOMAIN}
 
     php:
+        restart: always
         build:
             context: images/php
             args:
@@ -56,26 +58,28 @@ services:
     #     - magento-network
 
     es1:
-      image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
-      container_name: magento_elasticsearch
-      environment:
-        - node.name=es1
-        - cluster.name=elasticsearch
-        - bootstrap.memory_lock=true
-        - ES_JAVA_OPTS=-Xms512m -Xmx512m
-        - discovery.type=single-node
-      ulimits:
-        memlock:
-          soft: -1
-          hard: -1
-      volumes:
-        - magento_elasticsearch_volume:/usr/share/elasticsearch/data
-      ports:
-        - 9200:9200
-      networks:
-        - magento-network
+        restart: always
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.1.2
+        container_name: magento_elasticsearch
+        environment:
+            - node.name=es1
+            - cluster.name=elasticsearch
+            - bootstrap.memory_lock=true
+            - ES_JAVA_OPTS=-Xms512m -Xmx512m
+            - discovery.type=single-node
+        ulimits:
+            memlock:
+                soft: -1
+                hard: -1
+        volumes:
+            - magento_elasticsearch_volume:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - magento-network
 
     mailhog:
+        restart: always
         image: mailhog/mailhog
         container_name: magento_mailhog
         ports:
