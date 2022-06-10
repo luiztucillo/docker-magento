@@ -51,6 +51,13 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 # RUN Mysql docker to connect client
 `docker run --interactive --tty --rm mysql bash`
 
+# Install MP plugin
+```
+composer require mercadopago/magento2-plugin && \
+    bin/magento setup:upgrade && \
+    bin/magento setup:di:compile
+```
+
 # Install SMTP extension
 ```bash
 composer require mageplaza/module-smtp && \
