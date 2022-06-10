@@ -55,16 +55,17 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 ```
 composer require mercadopago/magento2-plugin && \
     bin/magento setup:upgrade && \
-    bin/magento setup:di:compile
+    bin/magento cache:clean
 ```
 
 # Install SMTP extension
 ```bash
 composer require mageplaza/module-smtp && \
     bin/magento setup:upgrade && \
-    bin/magento setup:di:compile
+    bin/magento cache:clean
 ```
 
 # Install sample data
 bin/magento sampledata:deploy && \
-    bin/magento setup:upgrade
+    bin/magento setup:upgrade && \
+    bin/magento cache:clean
