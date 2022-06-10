@@ -54,9 +54,10 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 # Install SMTP extension
 ```bash
 composer require mageplaza/magento-2-blog-extension && \
-    php bin/magento setup:upgrade
+    bin/magento setup:upgrade && \
+    bin/magento setup:di:compile
 ```
 
 # Install sample data
 bin/magento sampledata:deploy && \
-    php bin/magento setup:upgrade
+    bin/magento setup:upgrade
