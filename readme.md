@@ -15,7 +15,7 @@
 6 - `docker-compose up -d --build` para executar os containers
 
 # Download Magento
-1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/)
+1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
 2 - Execute `docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition .`
 
 # Install Magento
@@ -50,3 +50,11 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 
 # RUN Mysql docker to connect client
 `docker run --interactive --tty --rm mysql bash`
+
+# Install SMTP extension
+```bash
+composer require mageplaza/magento-2-blog-extension
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy
+```
