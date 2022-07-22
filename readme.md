@@ -33,6 +33,7 @@ docker exec -it magento_php php ./bin/magento setup:install \
     --admin-user=admin \
     --admin-password=1234qwer \
     --elasticsearch-host=es1 \
+    --elasticsearch-index-prefix=ltucillo \
     --language=pt_BR \
     --currency=BRL \
     --timezone=America/Sao_Paulo \
