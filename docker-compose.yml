@@ -26,6 +26,13 @@ services:
                 aliases:
                     - ${DOMAIN}
 
+    redis:
+        restart: always
+        image: redis:7
+        container_name: magento_redis
+        networks:
+            - magento-network
+
     php:
         restart: always
         build:
@@ -35,47 +42,10 @@ services:
                 host_os: ${HOST_OS}
                 domain: ${DOMAIN}
         container_name: magento_php
-        links:
-            # - mysql
-            - es1
         volumes:
             - ./src:/var/www/html
-            - php_composer_root:/root/.config/composer/
-            - php_sessions:/var/lib/php/sessions
-        networks:
-            - magento-network
-
-    # db:
-    #   image: mariadb:10.4
-    #   container_name: magento_db
-    #   environment:
-    #     - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-    #     - MYSQL_DATABASE=magento2
-    #   ports:
-    #     - 3306:3306
-    #   volumes:
-    #     - ./data/db/var/lib/mysql:/var/lib/mysql
-    #   networks:
-    #     - magento-network
-
-    es1:
-        restart: always
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
-        container_name: magento_elasticsearch
-        environment:
-            - node.name=es1
-            - cluster.name=elasticsearch
-            - bootstrap.memory_lock=true
-            - ES_JAVA_OPTS=-Xms512m -Xmx512m
-            - discovery.type=single-node
-        ulimits:
-            memlock:
-                soft: -1
-                hard: -1
-        volumes:
-            - magento_elasticsearch_volume:/usr/share/elasticsearch/data
-        ports:
-            - 9200:9200
+            - ./sessions:/var/lib/php/sessions
+            - ./credentials:/home/ubuntu/.composer
         networks:
             - magento-network
 
@@ -91,11 +61,3 @@ services:
 
 networks:
     magento-network:
-        driver: bridge
-
-volumes:
-    magento_elasticsearch_volume:
-    magento_var:
-    php_sessions:
-    php_composer_root:
-    php_composer_home:

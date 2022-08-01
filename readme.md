@@ -17,29 +17,39 @@
 # Download Magento
 1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
 2 - Execute `docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition .` \
-If you got permission error run outside docker but inside docker folder: `sudo chown -R [user-of-.env]: src`
+If you got permission error run outside docker but inside docker folder: `sudo chown -R $USER: src && sudo chown -R $USER: sessions && sudo chown -R $USER: credentials`
+Also, run: `sudo chown -R $USER: /etc/letsencrypt/live/`
 
 # Install Magento
 Execute o comando abaixo, alterando os dados para o correto
 ```
 docker exec -it magento_php php ./bin/magento setup:install \
-    --base-url=$DOMAIN \
-    --db-host=mysql.ppolimpo.io \
-    --db-name=ltucillo_magento \
-    --db-user=admin \
-    --db-password=1234qwer \
-    --admin-firstname=Luiz \
-    --admin-lastname=Tucillo \
-    --admin-email=luiz.tucillo@mercadolivre.com \
-    --admin-user=admin \
-    --admin-password=1234qwer \
-    --elasticsearch-host=es1 \
-    --elasticsearch-index-prefix=ltucillo \
+    --base-url=https://ltucillo.ppolimpo.io \
+    --db-host=mysqlhost.com \
+    --db-name=dbname \
+    --db-user=username \
+    --db-password=dbpass \
+    --admin-firstname=Nome \
+    --admin-lastname=Sobrenome \
+    --admin-email=meu@email.com \
+    --admin-user=adminuser \
+    --admin-password=adminpass \
+    --elasticsearch-host=127.0.0.1 \
+    --elasticsearch-index-prefix=elprefix \
     --language=pt_BR \
     --currency=BRL \
     --timezone=America/Sao_Paulo \
-    --use-rewrites=1
+    --use-rewrites=1 \
+    --session-save=redis \
+    --session-save-redis-host=redis \
+    --session-save-redis-db=2
 ```
+
+# Setting Redis as session storage
+https://devdocs.magento.com/guides/v2.4/config-guide/redis/redis-session.html
+docker exec -it magento_php bin/magento setup:config:set --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2 \
+    && docker exec -it magento_php ./bin/magento cache:clean
+
 
 # Test Elasticsearch
 curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
