@@ -37,6 +37,7 @@ services:
         restart: always
         build:
             context: images/php
+            dockerfile: Dockerfile-${PHP_VERSION}
             args:
                 username: ${USERNAME}
                 host_os: ${HOST_OS}
