@@ -29,6 +29,7 @@ docker exec -it magento_php php ./bin/magento setup:install \
     --db-name=dbname \
     --db-user=username \
     --db-password=dbpass \
+    --db-prefix=245_ \
     --admin-firstname=Nome \
     --admin-lastname=Sobrenome \
     --admin-email=meu@email.com \
