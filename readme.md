@@ -58,7 +58,7 @@ curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 #/admin_qdl39h
 
 # Disable 2FA in Admin
-`docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && bin/magento cache:flush`
+`docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && docker exec magento_php bin/magento cache:flush`
 
 # RUN Mysql docker to connect client
 `docker run --interactive --tty --rm mysql bash`
