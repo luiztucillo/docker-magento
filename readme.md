@@ -12,7 +12,18 @@
 
 5 - No arquivo docker-compose, comente o bloco do mysql caso não precise do banco de dados rodando local
 
-6 - `docker-compose up -d --build` para executar os containers
+6 - Prepare o ambiente executando: \
+```
+mkdir src && \
+mkdir session && \
+mkdir credentials && \
+mkdir logs && \
+touch logs/php-fpm-access.log && \
+touch logs/php-fpm-error.log && \
+sudo chown -R $USER: /etc/letsencrypt/live/
+```
+
+7 - `docker-compose up -d --build` para executar os containers
 
 # Download Magento
 1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
