@@ -47,6 +47,9 @@ services:
             - ./src:/var/www/html
             - ./sessions:/var/lib/php/sessions
             - ./credentials:/home/ubuntu/.composer
+            # Next lines for php7.2
+            - ./logs/php-fpm-error.log:/var/log/php-fpm/error-php-fpm.log
+            - ./logs/php-fpm-access.log:/var/log/php-fpm/access-php-fpm.log
         networks:
             - magento-network
 
