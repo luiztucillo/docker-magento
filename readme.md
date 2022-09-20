@@ -15,7 +15,7 @@
 6 - Prepare o ambiente executando: \
 ```
 mkdir src && \
-mkdir session && \
+mkdir sessions && \
 mkdir credentials && \
 mkdir logs && \
 touch logs/php-fpm-access.log && \
