@@ -36,7 +36,12 @@ __Para instalar uma versão específica do magento, adicionar `:x.x.x` ao nome d
 docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.3.2 .
 ```
 Se ocorrerem erros de permissão, execute: \
-`sudo chown -R $USER: src && sudo chown -R $USER: sessions && sudo chown -R $USER: credentials && sudo chown -R $USER: /etc/letsencrypt/live/`
+```
+sudo chown -R $USER: src && \
+sudo chown -R $USER: sessions && \
+sudo chown -R $USER: credentials && \
+sudo chown -R $USER: /etc/letsencrypt/live/
+```
 
 # Install Magento
 Execute o comando abaixo, alterando os dados para o correto
