@@ -27,8 +27,15 @@ sudo chown -R $USER: /etc/letsencrypt/live/
 
 # Download Magento
 1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
-2 - Execute `docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition .` \
-If you got permission error run outside docker but inside docker folder: \
+2 - Baixe a última versão do Magento \
+```
+docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition .
+```
+__Para instalar uma versão específica do magento, adicionar `:x.x.x` ao nome do repo. Exemplo:__
+```
+docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.3.2 .
+```
+Se ocorrerem erros de permissão, execute: \
 `sudo chown -R $USER: src && sudo chown -R $USER: sessions && sudo chown -R $USER: credentials && sudo chown -R $USER: /etc/letsencrypt/live/`
 
 # Install Magento
