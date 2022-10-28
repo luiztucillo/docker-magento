@@ -2,3 +2,7 @@
 ./data
 src
 .idea
+logs
+sessions
+credentials
+database

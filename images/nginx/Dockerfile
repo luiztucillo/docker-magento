@@ -24,6 +24,3 @@ COPY conf/nginx.conf /etc/nginx/
 
 RUN echo "set \$username $USERNAME;\n" >> /etc/nginx/var.conf
 RUN echo "set \$domain $DOMAIN;\n" >> /etc/nginx/var.conf
-
-RUN echo "ssl_certificate $CERT_PATH;\n" >> /etc/nginx/ssl.conf
-RUN echo "ssl_certificate_key $CERT_KEY_PATH;\n" >> /etc/nginx/ssl.conf

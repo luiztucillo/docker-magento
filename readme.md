@@ -2,7 +2,7 @@
 
 ## Uso
 
-1 - Crie um arquivo chamado .env usando de base o arquivo .env.sample  
+1 - Crie um arquivo chamado .env usando de base o arquivo .env.sample
 
 2 - Defina o usuário neste arquivo para o mesmo do seu sistema
 
@@ -104,3 +104,9 @@ composer require mageplaza/module-smtp && \
 bin/magento sampledata:deploy && \
     bin/magento setup:upgrade && \
     bin/magento cache:clean
+
+# XDEBUG
+## Path mappings
+.docker/src/vendor/mercadopago/magento2-plugin/src/MercadoPago /var/www/html/vendor/mercadopago/magento2-plugin/src/MercadoPago
+./docker/src/vendor/magento /var/www/html/vendor/magento
+./docker/src/pub/index.php /var/www/html/pub/index.php
