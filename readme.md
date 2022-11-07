@@ -106,7 +106,20 @@ bin/magento sampledata:deploy && \
     bin/magento cache:clean
 
 # XDEBUG
+Após instalar o plugin do Mercado Pago no padrão composer, configure o xdebug conforme abaixo.
+A pasta relativa ao módulo do Mercado Pago deve ser ajustada para onde clonou o repositório.
 ## Path mappings
-.docker/src/vendor/mercadopago/magento2-plugin/src/MercadoPago /var/www/html/vendor/mercadopago/magento2-plugin/src/MercadoPago
-./docker/src/vendor/magento /var/www/html/vendor/magento
-./docker/src/pub/index.php /var/www/html/pub/index.php
+```
+{
+  "name": "Listen for Magento Docker XDebug",
+  "type": "php",
+  "request": "launch",
+  "port": 9003,
+  "pathMappings": {
+      "/var/www/html/vendor/mercadopago/magento2-plugin/src/MercadoPago": "${workspaceRoot}/src/vendor/mercadopago/magento2-plugin/src/MercadoPago ",
+      "/var/www/html/vendor/magento": "${workspaceRoot}/src/vendor/magento",
+      "/var/www/html/pub/index.php": "${workspaceRoot}/src/pub/index.php"
+  },
+  "log": true
+}
+```
