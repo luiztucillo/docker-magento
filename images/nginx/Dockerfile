@@ -24,3 +24,6 @@ COPY conf/nginx.conf /etc/nginx/
 
 RUN echo "set \$username $USERNAME;\n" >> /etc/nginx/var.conf
 RUN echo "set \$domain $DOMAIN;\n" >> /etc/nginx/var.conf
+
+COPY certs/myCA.key /certs/cert.key
+COPY certs/myCA.pem /certs/cert.pem

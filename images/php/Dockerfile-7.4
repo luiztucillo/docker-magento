@@ -5,13 +5,10 @@ ENV PHP_CONFIG_PATH=/etc/php/7.4
 ARG username
 ENV USERNAME=$username
 
-ARG host_os
-ENV HOST_OS=$host_os
-
 ARG domain
 ENV DOMAIN=$domain
 
-COPY conf/xdebug-${HOST_OS}.ini $PHP_CONFIG_PATH/mods-available/xdebug.ini
+COPY conf/xdebug.ini $PHP_CONFIG_PATH/mods-available/xdebug.ini
 
 RUN useradd -m $USERNAME \
     && chown -R $USERNAME:$USERNAME /var/www/html
