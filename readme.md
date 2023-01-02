@@ -101,6 +101,8 @@ composer require mageplaza/module-smtp && \
 ```
 
 # Install sample data
-bin/magento sampledata:deploy && \
-    bin/magento setup:upgrade && \
-    bin/magento cache:clean
+```bash
+docker exec -it magento_php bin/magento bin/magento sampledata:deploy && \
+    docker exec -it magento_php bin/magento setup:upgrade && \
+    docker exec -it magento_php bin/magento bin/magento cache:clean
+```
