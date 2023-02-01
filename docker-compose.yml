@@ -10,28 +10,19 @@ services:
                 cert_path: ${CERT_PATH}
                 cert_key_path: ${CERT_KEY_PATH}
         container_name: magento_nginx
-        ports:
-            - 80:80
-            - 443:443
-        links:
-            - php
         volumes:
             - ./src:/var/www/html
             - ./images/nginx/conf/default.conf:/etc/nginx/conf.d/default.conf
             - ./images/nginx/conf/application.conf:/etc/nginx/application.conf
             - ${CERT_PATH}:${CERT_PATH}
             - ${CERT_KEY_PATH}:${CERT_KEY_PATH}
-        networks:
-            magento-network:
-                aliases:
-                    - ${DOMAIN}
+        network_mode: host
 
     redis:
         restart: always
         image: redis:7
         container_name: magento_redis
-        networks:
-            - magento-network
+        network_mode: host
 
     php:
         restart: always
@@ -47,21 +38,14 @@ services:
             - ./src:/var/www/html
             - ./sessions:/var/lib/php/sessions
             - ./credentials:/home/ubuntu/.composer
+            - ./payment-magento-plugin:/var/www/html/app/code/MercadoPago/PaymentMagento
             # Next lines for php7.2
             - ./logs/php-fpm-error.log:/var/log/php-fpm/error-php-fpm.log
             - ./logs/php-fpm-access.log:/var/log/php-fpm/access-php-fpm.log
-        networks:
-            - magento-network
+        network_mode: host
 
     mailhog:
         restart: always
         image: mailhog/mailhog
         container_name: magento_mailhog
-        ports:
-            - 1025:1025
-            - 8025:8025
-        networks:
-            - magento-network
-
-networks:
-    magento-network:
+        network_mode: host

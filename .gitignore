@@ -2,3 +2,6 @@
 ./data
 src
 .idea
+credentials
+logs
+payment-magento-plugin
