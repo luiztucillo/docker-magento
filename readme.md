@@ -71,20 +71,24 @@ docker exec -it magento_php php ./bin/magento setup:install \
 
 # Setting Redis as session storage
 https://devdocs.magento.com/guides/v2.4/config-guide/redis/redis-session.html
+```
 docker exec -it magento_php bin/magento setup:config:set --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2 \
     && docker exec -it magento_php ./bin/magento cache:clean
+```
 
 
 # Test Elasticsearch
+```
 curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
-
-#/admin_qdl39h
+```
 
 # Disable 2FA in Admin
 `docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && docker exec magento_php bin/magento cache:flush`
 
 # RUN Mysql docker to connect client
-`docker run --interactive --tty --rm mysql bash`
+```
+docker run --interactive --tty --rm mysql bash
+```
 
 # Install MP plugin
 ```
@@ -106,3 +110,49 @@ docker exec -it magento_php bin/magento sampledata:deploy && \
     docker exec -it magento_php bin/magento setup:upgrade && \
     docker exec -it magento_php bin/magento cache:clean
 ```
+
+# Desenvolvimento do plugin fora do docker
+1 - Faça o clone do plugin em algum diretório na máquina \
+2 - No `docker-compose.yml`, configure o volume do plugin para apontar para interno do docker, adicionando o caminho dentro do container `php`, na seção `volumes`
+```yml
+php:
+...
+volumes:
+      ...
+      - ./payment-magento-plugin:/var/www/html/app/code/MercadoPago/PaymentMagento
+      ...
+...
+```
+O formato é: `-[caminho_do_diretório_local]:[caminho_dentro_do_docker]`
+## Para o antigo plugin, mapear: \
+`- ./[caminho_local]/cart-magento2:/var/www/html/vendor/mercadopago/magento2-plugin` \ 
+## Para o novo plugin, mapear: \
+`- ./[caminho_local]:/var/www/html/app/code/MercadoPago/PaymentMagento`
+3 - Reinicie o docker com `docker-compose down && docker-compose up -d --build`
+
+# Debugging
+### VSCODE
+1 - Instalar a extensão oficial do xdebug após conectar na máquina remota. Buscar por: `xdebug.php-debug`\
+2 - No menu superior, clique em `Run` depois `Add configuration` e selecione `PHP`\
+3 - Crie a seguinte configuração no json que abre:
+```
+{
+  "name": "Listen for Magento Remote Debug",
+  "type": "php",
+  "request": "launch",
+  "port": 9003,
+  "pathMappings": {
+      "/var/www/html": "${workspaceRoot}/src",
+  },
+  "log": true
+},
+```
+4 - Coloque o caminho específico do plugin no `pathMappings` \
+   Ex.: \
+   ```json
+   "pathMappings": {
+      "/var/www/html": "${workspaceRoot}/src",
+      "/var/www/html/app/code/MercadoPago/PaymentMagento": "${workspaceRoot}/payment-magento-plugin"
+   },
+   ```
+5 - Na aba `Run and Debug` clique em `Run`
