@@ -6,6 +6,8 @@ services:
             args:
                 username: ${USERNAME}
                 domain: ${DOMAIN}
+        depends_on:
+            -   php
         container_name: magento_nginx
         ports:
             - "80:80"
@@ -34,14 +36,15 @@ services:
             args:
                 username: ${USERNAME}
                 domain: ${DOMAIN}
-                mercadopago_plugin_path: ${MERCADOPAGO_PLUGIN_PATH}
+        depends_on:
+            - mysql
+            - redis
+            - elasticsearch
         container_name: magento_php
         volumes:
             - ./src:/var/www/html
             - ./sessions:/var/lib/php/sessions
-            - ./credentials:/home/${USERNAME}/.composer
-            - ./credentials:/var/www/html/var/composer_home
-            # - ${MERCADOPAGO_PLUGIN_PATH}/src/MercadoPago:/var/www/html/app/code/MercadoPago
+            - ./payment-magento-plugin:/var/www/html/app/code/MercadoPago/PaymentMagento
             # Next lines for php7.2
             - ./logs/php-fpm-error.log:/var/log/php-fpm/error-php-fpm.log
             - ./logs/php-fpm-access.log:/var/log/php-fpm/access-php-fpm.log
