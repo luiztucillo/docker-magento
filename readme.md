@@ -76,6 +76,15 @@ docker exec -it magento_php bin/magento setup:config:set --session-save=redis --
     && docker exec -it magento_php ./bin/magento cache:clean
 ```
 
+# Comandos Úteis
+```bash
+docker exec -it magento_php bin/magento setup:upgrade && \
+docker exec -it magento_php rm -rf var/cache var/page_cache pub/static/frontend && \
+docker exec -it magento_php bin/magento setup:di:compile && \
+docker exec -it magento_php bin/magento setup:static:deploy --area frontend -f -j16 && \
+docker exec -it magento_php bin/magento cache:clean
+```
+
 
 # Test Elasticsearch
 ```
