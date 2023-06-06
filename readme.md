@@ -2,17 +2,17 @@
 
 ## Uso
 
-1 - Crie um arquivo chamado .env usando de base o arquivo .env.sample  
+1. Crie um arquivo chamado .env usando de base o arquivo .env.sample  
 
-2 - Defina o usuário neste arquivo para o mesmo do seu sistema
+2. Defina o usuário neste arquivo para o mesmo do seu sistema
 
-3 - Defina a URL neste arquivo para o seu domínio
+3. Defina a URL neste arquivo para o seu domínio
 
-4 - Defina o path dos arquivos de SSL neste arquivo
+4. Defina o path dos arquivos de SSL neste arquivo
 
-5 - No arquivo docker-compose, comente o bloco do mysql caso não precise do banco de dados rodando local
+5. No arquivo docker-compose, comente o bloco do mysql caso não precise do banco de dados rodando local
 
-6 - Prepare o ambiente executando: \
+6. Prepare o ambiente executando: \
 ```
 mkdir src && \
 mkdir sessions && \
@@ -23,7 +23,52 @@ touch logs/php-fpm-error.log && \
 sudo chown -R $USER: /etc/letsencrypt/live/
 ```
 
-7 - `docker-compose up -d --build` para executar os containers
+7. Execute os containers
+```
+docker-compose up -d --build
+```
+
+8. Pegue as informações de autenticação do repositório do Magento em [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/)
+
+9. Download Magento
+```
+docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.5-p2 .
+```
+
+10. Instale o Magento
+```
+docker exec -it magento_php php ./bin/magento setup:install \
+    --base-url=https://ltucillo.ppolimpo.io \
+    --db-host=mysqlhost.com \
+    --db-name=dbname \
+    --db-user=username \
+    --db-password=dbpass \
+    --db-prefix=m_ \
+    --admin-firstname=Nome \
+    --admin-lastname=Sobrenome \
+    --admin-email=meu@email.com \
+    --admin-user=admin \
+    --admin-password=1234qwer \
+    --elasticsearch-host=172.31.17.80 \
+    --elasticsearch-index-prefix=m_ \
+    --language=pt_BR \
+    --currency=BRL \
+    --timezone=America/Sao_Paulo \
+    --use-rewrites=1
+```
+
+11. Desabilite o 2FA no Admin
+```
+docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
+docker exec magento_php bin/magento cache:flush
+```
+
+12. Instale sample data
+```bash
+docker exec -it magento_php bin/magento sampledata:deploy && \
+docker exec -it magento_php bin/magento setup:upgrade && \
+docker exec -it magento_php bin/magento cache:clean
+```
 
 # Download Magento
 1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
@@ -43,39 +88,6 @@ sudo chown -R $USER: credentials && \
 sudo chown -R $USER: /etc/letsencrypt/live/
 ```
 
-# Install Magento
-Execute o comando abaixo, alterando os dados para o correto
-```
-docker exec -it magento_php php ./bin/magento setup:install \
-    --base-url=https://ltucillo.ppolimpo.io \
-    --db-host=mysqlhost.com \
-    --db-name=dbname \
-    --db-user=username \
-    --db-password=dbpass \
-    --db-prefix=245_ \
-    --admin-firstname=Nome \
-    --admin-lastname=Sobrenome \
-    --admin-email=meu@email.com \
-    --admin-user=adminuser \
-    --admin-password=adminpass \
-    --elasticsearch-host=127.0.0.1 \
-    --elasticsearch-index-prefix=elprefix \
-    --language=pt_BR \
-    --currency=BRL \
-    --timezone=America/Sao_Paulo \
-    --use-rewrites=1 \
-    --session-save=redis \
-    --session-save-redis-host=redis \
-    --session-save-redis-db=2
-```
-
-# Setting Redis as session storage
-https://devdocs.magento.com/guides/v2.4/config-guide/redis/redis-session.html
-```
-docker exec -it magento_php bin/magento setup:config:set --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2 \
-    && docker exec -it magento_php ./bin/magento cache:clean
-```
-
 # Comandos Úteis
 ```bash
 docker exec -it magento_php bin/magento setup:upgrade && \
@@ -85,14 +97,17 @@ docker exec -it magento_php bin/magento setup:static:deploy --area frontend -f -
 docker exec -it magento_php bin/magento cache:clean
 ```
 
+# Setting Redis as session storage
+https://devdocs.magento.com/guides/v2.4/config-guide/redis/redis-session.html
+```
+docker exec -it magento_php bin/magento setup:config:set --session-save=redis --session-save-redis-host=redis --session-save-redis-log-level=4 --session-save-redis-db=2 \
+    && docker exec -it magento_php ./bin/magento cache:clean
+```
 
 # Test Elasticsearch
 ```
 curl -X GET "localhost:9200/_cat/nodes?v=true&pretty"
 ```
-
-# Disable 2FA in Admin
-`docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && docker exec magento_php bin/magento cache:flush`
 
 # RUN Mysql docker to connect client
 ```
@@ -111,13 +126,6 @@ composer require mercadopago/magento2-plugin && \
 composer require mageplaza/module-smtp && \
     bin/magento setup:upgrade && \
     bin/magento cache:clean
-```
-
-# Install sample data
-```bash
-docker exec -it magento_php bin/magento sampledata:deploy && \
-    docker exec -it magento_php bin/magento setup:upgrade && \
-    docker exec -it magento_php bin/magento cache:clean
 ```
 
 # Desenvolvimento do plugin fora do docker

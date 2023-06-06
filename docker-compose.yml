@@ -18,12 +18,6 @@ services:
             - ${CERT_KEY_PATH}:${CERT_KEY_PATH}
         network_mode: host
 
-    redis:
-        restart: always
-        image: redis:7
-        container_name: magento_redis
-        network_mode: host
-
     php:
         restart: always
         build:
@@ -38,7 +32,7 @@ services:
             - ./src:/var/www/html
             - ./sessions:/var/lib/php/sessions
             - ./credentials:/home/ubuntu/.composer
-            - ./payment-magento-plugin:/var/www/html/app/code/MercadoPago/PaymentMagento
+            # - ./adb-payment:/var/www/html/app/code/MercadoPago/AdbPayment
             # Next lines for php7.2
             - ./logs/php-fpm-error.log:/var/log/php-fpm/error-php-fpm.log
             - ./logs/php-fpm-access.log:/var/log/php-fpm/access-php-fpm.log
