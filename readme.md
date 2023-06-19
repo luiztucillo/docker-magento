@@ -74,6 +74,11 @@ docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
 docker exec magento_php bin/magento cache:flush
 ```
 #### Magento 2.4.6 +
+```
+docker exec magento_php bin/magento module:disable Magento_AdminAdobeImsTwoFactorAuth && \
+docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
+docker exec magento_php bin/magento cache:flush
+```
 
 
 ### 12. Instale sample data
