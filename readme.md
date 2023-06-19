@@ -2,17 +2,17 @@
 
 ## Uso
 
-1. Crie um arquivo chamado .env usando de base o arquivo .env.sample  
+### 1. Crie um arquivo chamado .env usando de base o arquivo .env.sample  
 
-2. Defina o usuário neste arquivo para o mesmo do seu sistema
+### 2. Defina o usuário neste arquivo para o mesmo do seu sistema
 
-3. Defina a URL neste arquivo para o seu domínio
+### 3. Defina a URL neste arquivo para o seu domínio
 
-4. Defina o path dos arquivos de SSL neste arquivo
+### 4. Defina o path dos arquivos de SSL neste arquivo
 
-5. No arquivo docker-compose, comente o bloco do mysql caso não precise do banco de dados rodando local
+### 5. No arquivo docker-compose, comente o bloco do mysql caso não precise do banco de dados rodando local
 
-6. Prepare o ambiente executando: \
+### 6. Prepare o ambiente executando: \
 ```
 mkdir src && \
 mkdir sessions && \
@@ -23,19 +23,24 @@ touch logs/php-fpm-error.log && \
 sudo chown -R $USER: /etc/letsencrypt/live/
 ```
 
-7. Execute os containers
+### 7. Execute os containers
 ```
 docker-compose up -d --build
 ```
 
-8. Pegue as informações de autenticação do repositório do Magento em [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/)
+### 8. Pegue as informações de autenticação do repositório do Magento em [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/)
 
-9. Download Magento
+### 9. Download Magento
 ```
 docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.5-p2 .
 ```
 
-10. Instale o Magento
+### 10. Instale o Magento
+Se precisar configurar o mysql, execute:
+```
+docker run --interactive --tty --rm mysql bash
+```
+E instale o Magento:
 ```
 docker exec -it magento_php php ./bin/magento setup:install \
     --base-url=https://ltucillo.ppolimpo.io \
@@ -57,13 +62,16 @@ docker exec -it magento_php php ./bin/magento setup:install \
     --use-rewrites=1
 ```
 
-11. Desabilite o 2FA no Admin
+### 11. Desabilite o 2FA no Admin
+#### Magento 2.4.5 -
 ```
 docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
 docker exec magento_php bin/magento cache:flush
 ```
+#### Magento 2.4.6 +
 
-12. Instale sample data
+
+### 12. Instale sample data
 ```bash
 docker exec -it magento_php bin/magento sampledata:deploy && \
 docker exec -it magento_php bin/magento setup:upgrade && \
