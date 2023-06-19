@@ -61,6 +61,11 @@ docker exec -it magento_php php ./bin/magento setup:install \
     --timezone=America/Sao_Paulo \
     --use-rewrites=1
 ```
+#### No magento 2.4.6+ adicione:
+```
+--search-engine=elasticsearch7 \
+--elasticsearch-enable-auth=false \
+```
 
 ### 11. Desabilite o 2FA no Admin
 #### Magento 2.4.5 -
