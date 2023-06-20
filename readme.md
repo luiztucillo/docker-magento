@@ -35,12 +35,12 @@ docker-compose up -d --build
 docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.5-p2 .
 ```
 
-10. Instale o Magento
-Se precisar configurar o mysql, execute:
-```
-docker run --interactive --tty --rm mysql bash
-```
-E instale o Magento:
+10. Instale o Magento \
+> Se precisar configurar o mysql, execute:
+> ```
+> docker run --interactive --tty --rm mysql bash
+> ```
+
 ```
 docker exec -it magento_php php ./bin/magento setup:install \
     --base-url=https://ltucillo.ppolimpo.io \
