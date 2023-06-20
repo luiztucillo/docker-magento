@@ -89,6 +89,18 @@ docker exec -it magento_php bin/magento setup:upgrade && \
 docker exec -it magento_php bin/magento cache:clean
 ```
 
+# Tradução
+https://github.com/rafaelstz/traducao_magento2_pt_br
+
+# Comandos Úteis
+```bash
+docker exec -it magento_php bin/magento setup:upgrade && \
+docker exec -it magento_php rm -rf var/cache var/page_cache pub/static/frontend && \
+docker exec -it magento_php bin/magento setup:di:compile && \
+docker exec -it magento_php bin/magento setup:static:deploy --area frontend -f -j16 && \
+docker exec -it magento_php bin/magento cache:clean
+```
+
 # Download Magento
 1 - Busque as chaves de autenticação no [Magento Commerce](https://marketplace.magento.com/customer/accessKeys/) \
 2 - Baixe a última versão do Magento \
@@ -105,15 +117,6 @@ sudo chown -R $USER: src && \
 sudo chown -R $USER: sessions && \
 sudo chown -R $USER: credentials && \
 sudo chown -R $USER: /etc/letsencrypt/live/
-```
-
-# Comandos Úteis
-```bash
-docker exec -it magento_php bin/magento setup:upgrade && \
-docker exec -it magento_php rm -rf var/cache var/page_cache pub/static/frontend && \
-docker exec -it magento_php bin/magento setup:di:compile && \
-docker exec -it magento_php bin/magento setup:static:deploy --area frontend -f -j16 && \
-docker exec -it magento_php bin/magento cache:clean
 ```
 
 # Setting Redis as session storage
