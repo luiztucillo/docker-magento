@@ -67,7 +67,9 @@ docker exec -it magento_php php ./bin/magento setup:install \
 --elasticsearch-enable-auth=false \
 ```
 
-11. Desabilite o 2FA no Admin
+11. Atualize a URL do admin no arquivo `src/app/etc/env.php`
+
+12. Desabilite o 2FA no Admin
 #### Magento 2.4.5 -
 ```
 docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
@@ -80,7 +82,7 @@ docker exec magento_php bin/magento module:disable Magento_TwoFactorAuth && \
 docker exec magento_php bin/magento cache:flush
 ```
 
-12. Instale sample data
+13. Instale sample data
 ```bash
 docker exec -it magento_php bin/magento sampledata:deploy && \
 docker exec -it magento_php bin/magento setup:upgrade && \
