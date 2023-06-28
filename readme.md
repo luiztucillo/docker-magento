@@ -54,6 +54,7 @@ docker exec -it magento_php php ./bin/magento setup:install \
     --admin-email=meu@email.com \
     --admin-user=admin \
     --admin-password=1234qwer \
+    --backend-frontname=admin \
     --elasticsearch-host=172.31.17.80 \
     --elasticsearch-index-prefix=m_ \
     --language=pt_BR \
