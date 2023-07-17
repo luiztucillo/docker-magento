@@ -1,0 +1,30 @@
+FROM luiztucillo/php82
+
+ENV PHP_CONFIG_PATH=/etc/php/8.2
+
+ARG username
+ENV USERNAME=$username
+
+ARG host_os
+ENV HOST_OS=$host_os
+
+ARG domain
+ENV DOMAIN=$domain
+
+COPY conf/xdebug-${HOST_OS}.ini $PHP_CONFIG_PATH/mods-available/xdebug.ini
+
+RUN useradd -m $USERNAME \
+    && chown -R $USERNAME:$USERNAME /var/www/html
+
+RUN echo "user = $USERNAME" >> $PHP_CONFIG_PATH/fpm/php-fpm.conf \
+    && echo "group = $USERNAME" >> $PHP_CONFIG_PATH/fpm/php-fpm.conf
+
+RUN mkdir /home/$USERNAME/.composer \
+    && chown -R $USERNAME:$USERNAME /home/$USERNAME/.composer
+
+RUN composer self-update
+
+# Make sure the volume mount point is empty
+USER $USERNAME
+RUN rm -rf /var/www/html/*
+WORKDIR /var/www/html
