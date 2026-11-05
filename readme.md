@@ -1,5 +1,10 @@
 # Magento Docker
 
+## Crie um certificado (certbot precisa estar instalado)
+```
+sudo certbot certonly```
+```
+
 ## Uso
 
 1. Crie um arquivo chamado .env usando de base o arquivo .env.sample  
@@ -32,7 +37,7 @@ docker-compose up -d --build
 
 9. Download Magento
 ```
-docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.5-p2 .
+docker exec -it magento_php composer create-project -vvv --repository-url=https://repo.magento.com/ magento/project-community-edition:2.4.9 .
 ```
 
 10. Instale o Magento \
@@ -43,29 +48,27 @@ docker exec -it magento_php composer create-project -vvv --repository-url=https:
 
 ```
 docker exec -it magento_php php ./bin/magento setup:install \
-    --base-url=https://ltucillo.ppolimpo.io \
-    --db-host=mysqlhost.com \
+    --base-url=https://ltucillo-demo.ppolimpo.io \
+    --db-host=mysql.host.com \
     --db-name=dbname \
-    --db-user=username \
-    --db-password=dbpass \
+    --db-user=root \
+    --db-password=dbpassword \
     --db-prefix=m_ \
-    --admin-firstname=Nome \
-    --admin-lastname=Sobrenome \
-    --admin-email=meu@email.com \
+    --admin-firstname=First \
+    --admin-lastname=Name \
+    --admin-email=email@email.com \
     --admin-user=admin \
     --admin-password=1234qwer \
     --backend-frontname=admin \
-    --elasticsearch-host=172.31.17.80 \
-    --elasticsearch-index-prefix=m_ \
+    --search-engine=opensearch \
+    --opensearch-host=127.0.0.1 \
+    --opensearch-port=9200 \
+    --opensearch-index-prefix=magento2 \
+    --opensearch-enable-auth=0 \
     --language=pt_BR \
     --currency=BRL \
     --timezone=America/Sao_Paulo \
     --use-rewrites=1
-```
-#### No magento 2.4.6+ adicione:
-```
---search-engine=elasticsearch7 \
---elasticsearch-enable-auth=false \
 ```
 
 11. Atualize a URL do admin no arquivo `src/app/etc/env.php`
