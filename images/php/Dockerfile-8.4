@@ -13,8 +13,7 @@ ENV DOMAIN=$domain
 
 COPY conf/xdebug-${HOST_OS}.ini $PHP_CONFIG_PATH/mods-available/xdebug.ini
 
-RUN useradd -m $USERNAME \
-    && chown -R $USERNAME:$USERNAME /var/www/html
+RUN chown -R $USERNAME:$USERNAME /var/www/html
 
 RUN echo "user = $USERNAME" >> $PHP_CONFIG_PATH/fpm/php-fpm.conf \
     && echo "group = $USERNAME" >> $PHP_CONFIG_PATH/fpm/php-fpm.conf
@@ -23,6 +22,12 @@ RUN mkdir /home/$USERNAME/.composer \
     && chown -R $USERNAME:$USERNAME /home/$USERNAME/.composer
 
 RUN composer self-update
+
+RUN printf '%s\n' \
+      '' \
+      '[global]' \
+      'pid = /tmp/php-fpm.pid' \
+      >> "$PHP_CONFIG_PATH/fpm/php-fpm.conf"
 
 # Make sure the volume mount point is empty
 USER $USERNAME
