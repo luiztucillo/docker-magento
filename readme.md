@@ -142,7 +142,7 @@ docker run --interactive --tty --rm mysql bash
 
 # Install MP plugin
 ```
-docker exec -it magento_php composer require mercadopago/magento2-plugin && \
+docker exec -it magento_php composer require mercadopago/adb-payment && \
     docker exec -it magento_php bin/magento setup:upgrade && \
     docker exec -it magento_php bin/magento cache:clean
 ```
