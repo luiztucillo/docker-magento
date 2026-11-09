@@ -29,6 +29,13 @@ RUN printf '%s\n' \
       'pid = /tmp/php-fpm.pid' \
       >> "$PHP_CONFIG_PATH/fpm/php-fpm.conf"
 
+RUN mkdir -p "$PHP_CONFIG_PATH/fpm/conf.d" \
+      && printf '%s\n' \
+        'error_reporting = E_ALL & ~E_DEPRECATED & ~E_USER_DEPRECATED' \
+        'display_errors = Off' \
+        'log_errors = On' \
+        > "$PHP_CONFIG_PATH/fpm/conf.d/99-error-reporting.ini"
+
 # Make sure the volume mount point is empty
 USER $USERNAME
 RUN rm -rf /var/www/html/*
